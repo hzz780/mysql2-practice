@@ -56,8 +56,10 @@ async function get24hourTransactions (connection, currentHeight, days = 90, inte
   for (let index = 0; index < days; index++) {
     const sql = `select id from transactions_0 where block_height=${currentHeight - index * interval};`
     const [results] = await connection.query(sql);
-    ids.push(results.length)
-    console.log('get24hourTransactions index: ', index);
+    if (results[0]) {
+      console.log('get24hourTransactions results | index: ', results[0].id, index);
+      ids.push(results[0].id)
+    }
   }
   console.log('ids: ', ids);
   const transactionsList = [];
